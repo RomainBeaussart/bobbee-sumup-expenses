@@ -42,8 +42,8 @@ export function DatePicker({
                     }
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-                <Calendar mode="range" selected={range} onSelect={setRange} initialFocus />
+            <PopoverContent align="start" className="w-auto p-0">
+                <Calendar mode="range" selected={range} onSelect={setRange} initialFocus numberOfMonths={2}/>
             </PopoverContent>
         </Popover>
     );

@@ -10,7 +10,7 @@ import {
 
 export function SelectUser({
     defaultUser,
-    users,
+    users = [],
     onUserChange,
 }: {
     defaultUser: string;
@@ -25,7 +25,7 @@ export function SelectUser({
             <SelectContent>
                 <SelectGroup>
                     <SelectLabel>Utilisateurs</SelectLabel>
-                    { users.map((user) => (
+                    { users!.map((user) => (
                         <SelectItem key={user.id} value={user.id}>
                             {user.firstname} {user.lastname}
                         </SelectItem>
