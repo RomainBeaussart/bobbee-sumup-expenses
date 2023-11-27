@@ -39,12 +39,10 @@ export default function Home() {
         !rangeDate?.from || !rangeDate?.to || !user || loading;
 
     useEffect(() => {
-        setLoading(true);
         window.onmessage = (event) => {
             const { type, payload } = event.data;
             if (type === "company") {
                 setCompanyId(payload.id);
-                setLoading(false);
             }
         };
 
@@ -82,8 +80,8 @@ export default function Home() {
 
     return (
         <main className="flex min-h-screen flex-col justify-between">
-            <div className="mb-auto p-24">
-                <div className="pb-24 flex justify-between">
+            <div className="mb-auto p-20">
+                <div className="pb-20 flex justify-between">
                     <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
                         Exportez vos notes de frais
                     </h1>
