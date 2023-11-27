@@ -25,9 +25,7 @@ export default function Home() {
     );
     const [user, setUser] = useState<string | undefined>(undefined);
     const [loading, setLoading] = useState(false);
-    const [companyId, setCompanyId] = useState<string>(
-        "ck93umlw4btvg07301oxunp3l"
-    );
+    const [companyId, setCompanyId] = useState<string>("");
 
     const [users, setusers] = useState<
         { id: string; firstname: string; lastname: string }[]
@@ -40,9 +38,26 @@ export default function Home() {
     const exportButtonDisabled =
         !rangeDate?.from || !rangeDate?.to || !user || loading;
 
+    useEffect(() => {
+        setLoading(true);
+        window.onmessage = (event) => {
+            const { type, payload } = event.data;
+            if (type === "company") {
+                setCompanyId(payload.id);
+                setLoading(false);
+            }
+        };
+
+        return () => {
+            window.onmessage = null;
+        };
+    });
+
     const fetchUsers = () => {
+        setLoading(true);
         getUsers({ companyId }).then((users) => {
             setusers(users);
+            setLoading(false);
         });
     };
 
@@ -50,12 +65,14 @@ export default function Home() {
         if (!rangeDate || !rangeDate?.from || !rangeDate?.to || !user) {
             return;
         }
+        setLoading(true);
         getExpenses({
             companyId,
             userId: user || "",
             rangeDate: { from: rangeDate.from, to: rangeDate.to },
         }).then((expenses) => {
             setExpenses(expenses);
+            setLoading(false);
         });
     };
 
@@ -136,8 +153,8 @@ export default function Home() {
                             download="notes-de-frais.csv"
                         >
                             <Button variant="secondary">
-                                <FileDown className="mr-2 h-4 w-4" />{" "}
-                                Générer le fichier Excel
+                                <FileDown className="mr-2 h-4 w-4" /> Générer le
+                                fichier Excel
                             </Button>
                         </a>
                     </div>
