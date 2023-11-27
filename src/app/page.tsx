@@ -8,15 +8,16 @@ import {
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-  } from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 
 import { Expense, getExpenses, getUsers } from "./actions";
 
-import { FileDown, RotateCw } from "lucide-react";
+import { FileDown, RotateCw, FileCog, FileCog2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { ThemeToggle } from "@/components/ui/select-theme";
 import { ExpensesTable } from "@/components/ui/expenses-table";
+import { generateCsvUri } from "@/lib/expenseExport";
 
 export default function Home() {
     const [rangeDate, setRangeDate] = useState<DateRange | undefined>(
@@ -54,7 +55,7 @@ export default function Home() {
             userId: user || "",
             rangeDate: { from: rangeDate.from, to: rangeDate.to },
         }).then((expenses) => {
-            setExpenses(expenses)
+            setExpenses(expenses);
         });
     };
 
@@ -113,7 +114,7 @@ export default function Home() {
                                 </div>
                             ) : (
                                 <div className="flex items-center">
-                                    <FileDown className="mr-2 h-4 w-4" />{" "}
+                                    <FileCog className="mr-2 h-4 w-4" />{" "}
                                     Exporter
                                 </div>
                             )}
@@ -121,10 +122,26 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="mt-4">
-                    { expenses.length > 0 && (
-                        <ExpensesTable expenses={expenses} companyId={companyId} />
+                    {expenses.length > 0 && (
+                        <ExpensesTable
+                            expenses={expenses}
+                            companyId={companyId}
+                        />
                     )}
                 </div>
+                {expenses.length !== 0 && (
+                    <div className="mt-4 flex justify-end">
+                        <a
+                            href={generateCsvUri(expenses)}
+                            download="notes-de-frais.csv"
+                        >
+                            <Button variant="secondary">
+                                <FileDown className="mr-2 h-4 w-4" />{" "}
+                                Générer le fichier Excel
+                            </Button>
+                        </a>
+                    </div>
+                )}
             </div>
             <div className="bg-slate-200 text-slate-600 text-center py-2 dark:bg-slate-800 dark:text-slate-400">
                 Developed by{" "}
