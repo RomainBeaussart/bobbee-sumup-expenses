@@ -40,8 +40,10 @@ export default function Home() {
 
     useEffect(() => {
         window.onmessage = (event) => {
+            debugger
             const { type, payload } = event.data;
             if (type === "company") {
+                console.log("company", payload);
                 setCompanyId(payload.id);
             }
         };
