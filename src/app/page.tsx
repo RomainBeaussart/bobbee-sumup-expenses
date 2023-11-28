@@ -15,14 +15,33 @@ import { Expense, getExpenses, getUsers } from "./actions";
 import { FileDown, RotateCw, FileCog, FileCog2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
+import dayjs from "dayjs";
 import { ThemeToggle } from "@/components/ui/select-theme";
 import { ExpensesTable } from "@/components/ui/expenses-table";
 import { generateCsvUri } from "@/lib/expenseExport";
 
+function rangeDateInitValue(): DateRange {
+    let from: Date
+    let to: Date
+
+    const currentDateNumber = dayjs().date()
+
+    if (currentDateNumber >= 20) {
+        from = dayjs().startOf("month").toDate()
+        to = dayjs().endOf("month").toDate()
+    } else {
+        from = dayjs().subtract(1, "month").startOf("month").toDate()
+        to = dayjs().subtract(1, "month").endOf("month").toDate()
+    }
+
+    return {
+        from,
+        to
+    }
+}
+
 export default function Home() {
-    const [rangeDate, setRangeDate] = useState<DateRange | undefined>(
-        undefined
-    );
+    const [rangeDate, setRangeDate] = useState<DateRange | undefined>(rangeDateInitValue());
     const [user, setUser] = useState<string | undefined>(undefined);
     const [loading, setLoading] = useState(false);
     const [companyId, setCompanyId] = useState<string>("");
