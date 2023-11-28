@@ -21,22 +21,18 @@ import { ExpensesTable } from "@/components/ui/expenses-table";
 import { generateCsvUri } from "@/lib/expenseExport";
 
 function rangeDateInitValue(): DateRange {
-    let from: Date
-    let to: Date
-
     const currentDateNumber = dayjs().date()
 
     if (currentDateNumber >= 20) {
-        from = dayjs().startOf("month").toDate()
-        to = dayjs().endOf("month").toDate()
-    } else {
-        from = dayjs().subtract(1, "month").startOf("month").toDate()
-        to = dayjs().subtract(1, "month").endOf("month").toDate()
+        return {
+            from: dayjs().startOf("month").toDate(),
+            to: dayjs().endOf("month").toDate()
+        }
     }
 
     return {
-        from,
-        to
+        from: dayjs().subtract(1, "month").startOf("month").toDate(),
+        to: dayjs().subtract(1, "month").endOf("month").toDate()
     }
 }
 
