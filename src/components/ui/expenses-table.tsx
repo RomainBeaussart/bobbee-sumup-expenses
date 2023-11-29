@@ -62,7 +62,7 @@ function getTypeOfReport(accountableAccount: string) {
     if (!accountTitle) return notAvailable;
 
     return (
-        <Badge variant="destructive">
+        <Badge variant="secondary">
             { accountTitle }
         </Badge>
     );
